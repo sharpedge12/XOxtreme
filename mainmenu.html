@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Main Menu</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: #100e17;
+            color: #fff;
+        }
+
+        .container {
+            text-align: center;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 0;
+            font-weight: 700;
+            color: #b15cff;
+            text-shadow: 2px 2px 4px #8a00ff;
+            transition: transform 0.3s;
+        }
+
+        h1:hover {
+            transform: scale(1.05);
+        }
+
+        h2 {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            font-weight: 400;
+            color: #b15cff;
+            text-shadow: 1px 1px 2px #8a00ff;
+        }
+
+        .menu {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        button {
+            padding: 15px 30px;
+            margin: 10px;
+            font-size: 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+            background-color: #6e3bd2;
+            color: #fff;
+            transition: background-color 0.3s, transform 0.2s;
+            font-family: 'Roboto', sans-serif;
+            box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        button:hover {
+            background-color: #8a00ff;
+            transform: scale(1.1);
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Main Menu</h1>
+        <h2>Select Your Gamemode</h2>
+        <div class="menu">
+            <button onclick="startGame('easy')">1 Player (Easy)</button>
+            <button onclick="startGame('impossible')">1 Player (Impossible)</button>
+            <button onclick="startGame('two')">2 Player</button>
+            <button onclick="startGame('four')">4 Player</button>
+        </div>
+    </div>
+
+    <script>
+        function startGame(mode) {
+            switch (mode) {
+                case 'easy':
+                    window.location.href = 'easyai.html';
+                    break;
+                case 'impossible':
+                    window.location.href = 'impai.html';
+                    break;
+                case 'two':
+                    window.location.href = 'http://localhost:3500';
+                    break;
+                case 'four':
+                    window.location.href = 'http://localhost:3000';
+                    break;
+                default:
+                    console.log('Invalid selection');
+                    break;
+            }
+        }
+    </script>
+
+</body>
+
+</html>

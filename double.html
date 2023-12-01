@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic-Tac-Toe</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tilt+Warp&display=swap" rel="stylesheet">
+    <link href="double.css" rel="stylesheet">
+
+
+</head>
+
+<!-- THIS IS MINI PROJECT FOR GROUP XOxtreme by Anshul , Arihant , Ashutosh and Ashvini -->
+
+<body>
+
+    <div class="transparent-layer"></div>
+    <div class="transparent-layer-left"></div>
+    <div class="transparent-layer-right"></div>
+    <div class="box">
+        <div class="lightbar" id="lightbar"></div>
+        <div class="toplayer" id="toplayer"></div>
+        <h2>Tic-Tac-Toe</h2>
+    </div>
+
+    <div class="popup" id="popup">
+        <img src="uwin2.avif" alt="win.avif">
+        <button class="'popBtn" onclick="closePopup()">OK</button>
+    </div>
+
+    <div style="display: flex; width: 49vw; position: relative;">
+        <p id="userCont">You : <span id="user2"></span> <br> Team : <span id="tuser2"></span></p>
+        <p style="position: absolute; right: 0;" id="oppNameCont">Opponent : <span id="oppName2"></span><br> Opponent's
+            Team: <span id="opptName2"></span> </p>
+
+    </div>
+
+    <div style="display: flex; width: 49vw; position: relative; margin-left: 775px; margin-top: -58.2px;">
+        <p id="usertCont">You : <span id="tuser"></span> <br> Team : <span id="user"></span></p>
+        <p style="position: absolute; right: 0;" id="oppNametCont">Opponent : <span id="opptName"></span><br> Opponent's
+            Team: <span id="oppName"></span> </p>
+
+    </div>
+
+    <div class="vertical" id="vertical"></div>
+
+    <br>
+    <p id="valueCont">You are playing as <span id="value"></span> &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;
+        &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;
+        &emsp; &emsp; &emsp; You are playing as <span id="valuet"></span></p>
+    <br>
+    <p id="whosTurn">X's Turn</p>
+    <div class="getnamebox">
+        <p style="font-size: 1.2rem;" id="enterName">Enter your name : </p>
+        <input type="text" placeholder="Your Name" id="name" autocomplete="off">
+
+
+        <p style="font-size: 1.2rem;" id="entertName">Enter teammate's name : </p>
+        <input type="text" placeholder="Teammate's Name" id="tname" autocomplete="off">
+    </div>
+    <button id="find" class="glowing-button">Search for a player</button>
+    <img id="loading" src="loading.gif" alt="">
+
+    <div id="bigcont">
+        <div id="cont">
+
+            <button id="btn1" class="btn glow"></button>
+            <button id="btn2" class="btn glow"></button>
+            <button id="btn3" class="btn glow"></button>
+            <button id="btn4" class="btn glow"></button>
+            <button id="btn5" class="btn glow"></button>
+            <button id="btn6" class="btn glow"></button>
+            <button id="btn7" class="btn glow"></button>
+            <button id="btn8" class="btn glow"></button>
+            <button id="btn9" class="btn glow"></button>
+        </div>
+    </div>
+
+    <div id="bigtcont">
+        <div id="tcont">
+
+            <button id="tbtn1" class="btn glow"></button>
+            <button id="tbtn2" class="btn glow"></button>
+            <button id="tbtn3" class="btn glow"></button>
+            <button id="tbtn4" class="btn glow"></button>
+            <button id="tbtn5" class="btn glow"></button>
+            <button id="tbtn6" class="btn glow"></button>
+            <button id="tbtn7" class="btn glow"></button>
+            <button id="tbtn8" class="btn glow"></button>
+            <button id="tbtn9" class="btn glow"></button>
+        </div>
+    </div>
+
+
+</body>
+<script src="/socket.io/socket.io.js"></script>
+
+
+<script>
+
+
+    let popup = document.getElementById("popup");
+
+    function openPopup() {
+        popup.classList.add("openPopup");
+    }
+    function closePopup() {
+        popup.classList.remove("openPopup");
+    }
+
+    const transparentLayer = document.querySelector(".transparent-layer");
+    transparentLayer.style.pointerEvents = "none";
+    const transparentLayerLeft = document.querySelector(".transparent-layer-left");
+    transparentLayerLeft.style.pointerEvents = "none";
+    const transparentLayerRight = document.querySelector(".transparent-layer-right");
+    transparentLayerRight.style.pointerEvents = "none";
+
+
+    document.getElementById("loading").style.display = "none"
+    document.getElementById("bigcont").style.display = "none"
+    document.getElementById("bigtcont").style.display = "none"
+    document.getElementById("userCont").style.display = "none"
+    document.getElementById("usertCont").style.display = "none"
+    document.getElementById("oppNameCont").style.display = "none"
+    document.getElementById("oppNametCont").style.display = "none"
+    document.getElementById("valueCont").style.display = "none"
+    document.getElementById("whosTurn").style.display = "none"
+    document.getElementById("vertical").style.display = "none"
+
+    const socket = io();
+
+    let name;
+    let tname;
+
+    document.getElementById('find').addEventListener("click", function () {
+        name = document.getElementById("name").value
+        tname = document.getElementById("tname").value
+        document.getElementById("user").innerText = name
+        document.getElementById("user2").innerText = name
+        document.getElementById("tuser").innerText = tname
+        document.getElementById("tuser2").innerText = tname
+        if (name == null || name == '' || tname == null || tname == '') {
+            alert("Please enter a name")
+        }
+        else {
+
+            socket.emit("find", { name: name, tname: tname })
+
+            document.getElementById("loading").style.display = "block"
+            document.getElementById("find").disabled = true;
+
+        }
+    })
+
+
+
+    socket.on("find", (e) => {
+
+
+        let allPlayersArray = e.allPlayers
+        console.log("html", allPlayersArray)
+
+        let oppName
+        let opptName
+        let value
+
+        const foundObject = allPlayersArray.find(obj => obj.p1.p1name == `${name}` || obj.p2.p2name == `${name}`);
+        foundObject.p1.p1name == `${name}` ? oppName = foundObject.p2.p2name : oppName = foundObject.p1.p1name
+        foundObject.p1.p1name == `${name}` ? opptName = foundObject.pt2.pt2name : opptName = foundObject.pt1.pt1name
+        foundObject.p1.p1name == `${name}` ? value = foundObject.p1.p1value : value = foundObject.p2.p2value
+
+        document.getElementById("oppName").innerText = oppName
+        document.getElementById("oppName2").innerText = oppName
+        document.getElementById("opptName").innerText = opptName
+        document.getElementById("opptName2").innerText = opptName
+        document.getElementById("value").innerText = value
+        document.getElementById("valuet").innerText = value
+
+        if (name != '') {
+            document.getElementById("userCont").style.display = "block"
+            document.getElementById("usertCont").style.display = "block"
+            document.getElementById("oppNameCont").style.display = "block"
+            document.getElementById("oppNametCont").style.display = "block"
+            document.getElementById("valueCont").style.display = "block"
+            document.getElementById("lightbar").style.display = "none"
+            document.getElementById("toplayer").style.display = "none"
+            document.getElementById("loading").style.display = "none"
+            document.getElementById("name").style.display = "none"
+            document.getElementById("tname").style.display = "none"
+            document.getElementById("find").style.display = "none"
+            document.getElementById("enterName").style.display = "none"
+            document.getElementById("entertName").style.display = "none"
+            document.getElementById("bigcont").style.display = "block"
+            document.getElementById("bigtcont").style.display = "block"
+            document.getElementById("whosTurn").style.display = "block"
+            document.getElementById("vertical").style.display = "block"
+            let value = document.getElementById("value").innerText
+            if (value == "O") {
+                transparentLayer.style.pointerEvents = "auto";
+            } else {
+                transparentLayer.style.pointerEvents = "none";
+                transparentLayerRight.style.pointerEvents = "auto";
+            }
+            var nwer = `It is time for ${foundObject.p1.p1name} (X) to move !  `
+            var spacess = "&emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;  &emsp; &emsp; &emsp;"
+            var finalvar = "<p style='font-size: 1.3rem;'>" + nwer + spacess + nwer + "</p>"
+            document.getElementById("whosTurn").innerHTML = finalvar
+
+        }
+
+
+
+
+    })
+
+    document.querySelectorAll(".btn").forEach(e => {
+        e.addEventListener("click", function () {
+            let value = document.getElementById("value").innerText
+            e.innerText = value
+
+            socket.emit("playing", { value: value, id: e.id, name: name })
+
+        })
+    })
+
+    socket.on("playing", (e) => {
+        const foundObject = (e.allPlayers).find(obj => obj.p1.p1name == `${name}` || obj.p2.p2name == `${name}`);
+        let value = document.getElementById("value").innerText
+
+        p1id = foundObject.p1.p1move
+        pt1id = foundObject.pt1.pt1move
+        p2id = foundObject.p2.p2move
+        pt2id = foundObject.pt2.pt2move
+        let p1namez = foundObject.p1.p1name
+        let pt1namez = foundObject.pt1.pt1name
+        let p2namez = foundObject.p2.p2name
+        let pt2namez = foundObject.pt2.pt2name
+        var spacess = "&emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;  &emsp; &emsp; &emsp;  &emsp;  &emsp; &emsp; &emsp; &emsp;  &emsp;  &emsp; &emsp; &emsp;  &emsp; "
+        var finalvar = "<p style='font-size: 1.3rem;'>" + "</p>"
+        var nwer = ''
+
+        if ((foundObject.sum) % 4 == 0) {
+            nwer = `${pt2namez} (O) move !`
+            finalvar = "<p style='font-size: 1.3rem;'>" + nwer + spacess + nwer + "</p>"
+            document.getElementById("whosTurn").innerHTML = finalvar
+            if (value == "X") {
+                transparentLayer.style.pointerEvents = "none";
+                transparentLayerLeft.style.pointerEvents = "none";
+                transparentLayerRight.style.pointerEvents = "none";
+                transparentLayer.style.pointerEvents = "auto";
+            } else {
+                transparentLayer.style.pointerEvents = "none";
+                transparentLayerLeft.style.pointerEvents = "none";
+                transparentLayerRight.style.pointerEvents = "none";
+                transparentLayer.style.pointerEvents = "none";
+                transparentLayerLeft.style.pointerEvents = "auto";
+            }
+        } else if (((foundObject.sum) - 1) % 4 == 0) {
+            nwer = `${p1namez} (X) move !`
+            finalvar = "<p style='font-size: 1.3rem;'>" + nwer + spacess + nwer + "</p>"
+            document.getElementById("whosTurn").innerHTML = finalvar
+            if (value == "O") {
+                transparentLayer.style.pointerEvents = "none";
+                transparentLayerLeft.style.pointerEvents = "none";
+                transparentLayerRight.style.pointerEvents = "none";
+                transparentLayer.style.pointerEvents = "auto";
+            } else {
+                transparentLayer.style.pointerEvents = "none";
+                transparentLayerLeft.style.pointerEvents = "none";
+                transparentLayerRight.style.pointerEvents = "none";
+                transparentLayer.style.pointerEvents = "none";
+                transparentLayerRight.style.pointerEvents = "auto";
+            }
+        }
+        else if ((foundObject.sum) % 2 == 0) {
+            nwer = `${pt1namez} (X) move !`
+            finalvar = "<p style='font-size: 1.3rem;'>" + nwer + spacess + nwer + "</p>"
+            document.getElementById("whosTurn").innerHTML = finalvar
+            if (value == "O") {
+                transparentLayer.style.pointerEvents = "none";
+                transparentLayerLeft.style.pointerEvents = "none";
+                transparentLayerRight.style.pointerEvents = "none";
+                transparentLayer.style.pointerEvents = "auto";
+            } else {
+                transparentLayer.style.pointerEvents = "none";
+                transparentLayerLeft.style.pointerEvents = "none";
+                transparentLayerRight.style.pointerEvents = "none";
+                transparentLayer.style.pointerEvents = "none";
+                transparentLayerLeft.style.pointerEvents = "auto";
+            }
+        } else {
+            nwer = `${p2namez} (O) move !`
+            finalvar = "<p style='font-size: 1.3rem;'>" + nwer + spacess + nwer + "</p>"
+            document.getElementById("whosTurn").innerHTML = finalvar
+            if (value == "X") {
+                transparentLayer.style.pointerEvents = "none";
+                transparentLayerLeft.style.pointerEvents = "none";
+                transparentLayerRight.style.pointerEvents = "none";
+                transparentLayer.style.pointerEvents = "auto";
+            } else {
+                transparentLayer.style.pointerEvents = "none";
+                transparentLayerLeft.style.pointerEvents = "none";
+                transparentLayerRight.style.pointerEvents = "none";
+                transparentLayer.style.pointerEvents = "none";
+                transparentLayerRight.style.pointerEvents = "auto";
+            }
+        }
+
+        if (p1id != '') {
+            document.getElementById(`${p1id}`).innerText = "X"
+            document.getElementById(`${p1id}`).disabled = true
+        }
+        if (p2id != '') {
+            document.getElementById(`${p2id}`).innerText = "O"
+            document.getElementById(`${p2id}`).disabled = true
+        }
+
+        check(name, foundObject.sum)
+
+
+    })
+
+    function check(name, sum) {
+
+
+        document.getElementById("btn1").innerText == '' ? b1 = "a" : b1 = document.getElementById("btn1").innerText
+        document.getElementById("btn2").innerText == '' ? b2 = "b" : b2 = document.getElementById("btn2").innerText
+        document.getElementById("btn3").innerText == '' ? b3 = "c" : b3 = document.getElementById("btn3").innerText
+        document.getElementById("btn4").innerText == '' ? b4 = "d" : b4 = document.getElementById("btn4").innerText
+        document.getElementById("btn5").innerText == '' ? b5 = "e" : b5 = document.getElementById("btn5").innerText
+        document.getElementById("btn6").innerText == '' ? b6 = "f" : b6 = document.getElementById("btn6").innerText
+        document.getElementById("btn7").innerText == '' ? b7 = "g" : b7 = document.getElementById("btn7").innerText
+        document.getElementById("btn8").innerText == '' ? b8 = "h" : b8 = document.getElementById("btn8").innerText
+        document.getElementById("btn9").innerText == '' ? b9 = "i" : b9 = document.getElementById("btn9").innerText
+
+        document.getElementById("tbtn1").innerText == '' ? tb1 = "j" : tb1 = document.getElementById("tbtn1").innerText
+        document.getElementById("tbtn2").innerText == '' ? tb2 = "k" : tb2 = document.getElementById("tbtn2").innerText
+        document.getElementById("tbtn3").innerText == '' ? tb3 = "l" : tb3 = document.getElementById("tbtn3").innerText
+        document.getElementById("tbtn4").innerText == '' ? tb4 = "m" : tb4 = document.getElementById("tbtn4").innerText
+        document.getElementById("tbtn5").innerText == '' ? tb5 = "n" : tb5 = document.getElementById("tbtn5").innerText
+        document.getElementById("tbtn6").innerText == '' ? tb6 = "o" : tb6 = document.getElementById("tbtn6").innerText
+        document.getElementById("tbtn7").innerText == '' ? tb7 = "p" : tb7 = document.getElementById("tbtn7").innerText
+        document.getElementById("tbtn8").innerText == '' ? tb8 = "q" : tb8 = document.getElementById("tbtn8").innerText
+        document.getElementById("tbtn9").innerText == '' ? tb9 = "r" : tb9 = document.getElementById("tbtn9").innerText
+
+
+        if ((b1 == b2 && b2 == b3) || (b4 == b5 && b5 == b6) || (b7 == b8 && b8 == b9) || (b1 == b4 && b4 == b7) || (b2 == b5 && b5 == b8) || (b3 == b6 && b6 == b9) || (b1 == b5 && b5 == b9) || (b3 == b5 && b5 == b7) || (tb1 == tb2 && tb2 == tb3) || (tb4 == tb5 && tb5 == tb6) || (tb7 == tb8 && tb8 == tb9) || (tb1 == tb4 && tb4 == tb7) || (tb2 == tb5 && tb5 == tb8) || (tb3 == tb6 && tb6 == tb9) || (tb1 == tb5 && tb5 == tb9) || (tb3 == tb5 && tb5 == tb7)) {
+
+            socket.emit("gameOver", { name: name })
+
+            setTimeout(() => {
+
+                openPopup();
+
+                setTimeout(() => {
+                    location.reload()
+
+                }, 5000)
+
+            }, 100)
+
+        } else if (sum == 19) {
+            socket.emit("gameOver", { name: name })
+
+            setTimeout(() => {
+
+                alert("DRAW!!")
+
+                setTimeout(() => {
+                    location.reload()
+
+                }, 10000)
+
+            }, 100)
+        }
+    }
+
+
+
+</script>
+
+</html>

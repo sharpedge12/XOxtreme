@@ -1,0 +1,385 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: "Inconsolata", monospace;
+}
+
+
+
+body {
+    background-color: black;
+    background-size: cover;
+    display: grid;
+    place-items: center;
+    font-family: 'Tilt Warp', cursive;
+}
+
+h1 {
+    margin: 50px 0 50px 0;
+    font-size: 5rem;
+    color: rgb(32, 183, 93);
+    -webkit-text-stroke: .5px white;
+}
+
+input {
+    margin-bottom: 20px;
+    padding: 5px;
+    font-size: 1.2rem;
+}
+
+
+button {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    border: 2px solid white;
+}
+
+img {
+    width: 30px;
+}
+
+#cont {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+
+
+.btn:hover {
+    /* background-color: rgb(226, 228, 230); */
+}
+
+button.enabled {
+    opacity: 1;
+}
+
+p {
+    font-size: 2rem;
+    color: white;
+}
+
+.transparent-layer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0);
+    z-index: 9999;
+}
+
+.glow {
+    font-size: 4rem;
+    display: inline-block;
+    cursor: pointer;
+    text-decoration: none;
+    color: #6DD7FD;
+    text-shadow: 0 0 0.125em hsl(0 0% 100% / 0.3), 0 0 0.45em currentColor;
+    position: relative;
+}
+
+.btn {
+
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
+    border: 2px solid white;
+    margin: 0;
+    background-color: black;
+
+
+}
+
+.box {
+    position: relative;
+    width: 600px;
+    height: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+
+}
+
+.box h2 {
+    color: #fff;
+    font-size: 5em;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-shadow: 0 0 10px #00b3ff,
+        0 0 20px #00b3ff,
+        0 0 40px #00b3ff,
+        0 0 80px #00b3ff,
+        0 0 120px #00b3ff;
+}
+
+.lightbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 10px;
+    height: 100%;
+    background: #fff;
+    z-index: 2;
+    box-shadow: 0 0 10px #00b3ff,
+        0 0 20px #00b3ff,
+        0 0 40px #00b3ff,
+        0 0 80px #00b3ff,
+        0 0 120px #00b3ff;
+    animation: animatelightbar 5s linear infinite;
+}
+
+@keyframes animatelightbar {
+
+    0%,
+    5% {
+        transform: scaleY(0) translateX(0);
+    }
+
+    10% {
+        transform: scaleY(1) translateX(0);
+    }
+
+    90% {
+        transform: scaleY(1) translateX(calc(600px - 10px));
+    }
+
+    95%,
+    100% {
+        transform: scaleY(0) translateX(calc(600px - 10px));
+    }
+}
+
+.toplayer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: black;
+    animation: animatetoplayer 10s linear infinite;
+}
+
+@keyframes animatetoplayer {
+
+    0%,
+    2.5% {
+        transform: translateX(0);
+    }
+
+    5% {
+        transform: translateX(0);
+    }
+
+    45% {
+        transform: translateX(100%);
+    }
+
+    47.5%,
+    50% {
+        transform: translateX(100%);
+    }
+
+
+    50.01%,
+    52.5% {
+        transform: translateX(-100%);
+    }
+
+    55% {
+        transform: translateX(-100%);
+    }
+
+    95% {
+        transform: translateX(0);
+    }
+
+    97.5%,
+    100% {
+        transform: translateX(0);
+    }
+}
+
+.popup {
+    width: 400px;
+    background: #000;
+    border-radius: 6px;
+    position: absolute;
+    top: 20%;
+    left: 35%;
+    transform: translate(-50%, -50%, scale(0.1));
+    text-align: center;
+    padding: 0 30px 30px;
+    color: #333;
+    visibility: hidden;
+    transition: transform 0.8s top 0.8s;
+    z-index: 99999999;
+}
+
+.openPopup {
+    visibility: visible;
+    top: 20%;
+    transform: translate(-50%, -50%, scale(1));
+
+}
+
+.popup img {
+    width: 350px;
+}
+
+.popup button {
+    width: 100px;
+    margin-top: 50px;
+    padding: 10px 0;
+    color: #fff;
+    outline: none;
+    font-size: 18px;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #000;
+}
+
+.blue-btn {
+    color: #03e9f4;
+    font-size: 1.5rem;
+    background-color: #000;
+    border: 1.5px solid #03e9f4;
+    border-radius: 7px;
+    cursor: pointer;
+    width: 250px;
+}
+
+.blue-btn:hover {
+    background-color: #03e9f4;
+    color: #050801;
+    box-shadow: 0px 0px 5px #03e9f4, 0px 0px 25px #03e9f4, 0px 0px 50px #03e9f4, 0px 0px 100px #03e9f4;
+    -webkit-box-reflect: below 1px linear-gradient(transparent, #0005);
+}
+
+
+.glowing-button {
+    margin: 10px;
+    position: relative;
+    background-color: #03e9f4;
+    box-shadow: 0 0 20px 0 #03e9f4;
+    border: 2px solid #03e9f4;
+    padding: 10px 40px;
+    background-color: #000;
+    transition: .4s;
+    font-size: 15px;
+    cursor: pointer;
+    color: #03e9f4;
+    z-index: 0;
+    width: 250px;
+}
+
+.glowing-button::before {
+    content: '';
+    width: 100%;
+    height: calc(50% + 1px);
+    background-color: #03e9f4;
+    position: absolute;
+    left: 0;
+    top: 0;
+    border: 2px solid #03e9f4;
+    transition: .4s;
+    box-shadow: 0 0 20px 0 #03e9f4;
+    z-index: -1;
+    width: 30px;
+    height: 10px;
+    top: -5px;
+    left: -5px;
+    transform: skewX(30deg);
+    background-color: #000;
+}
+
+.glowing-button::after {
+    content: '';
+    width: 100%;
+    height: calc(50% + 1px);
+    background-color: #03e9f4;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    border: 2px solid #03e9f4;
+    transition: .4s;
+    box-shadow: 0 0 20px 0 #03e9f4;
+    z-index: -1;
+    width: 30px;
+    height: 10px;
+    bottom: -5px;
+    right: -5px;
+    transform: skewX(-30deg);
+    background-color: #000;
+}
+
+.glowing-button:hover::before {
+    left: calc(100% - 25px);
+    transform: skewX(-30deg);
+}
+
+.glowing-button:hover::after {
+    right: calc(100% - 25px);
+    transform: skewX(30deg);
+}
+
+.glowing-button:hover {
+    background-color: #03e9f4;
+    color: #000;
+}
+
+#btn1 {
+    border-top: #000;
+    border-left: #000;
+}
+
+#btn2 {
+    border-top: #000;
+}
+
+#btn3 {
+    border-top: #000;
+    border-right: #000;
+}
+
+#btn4 {
+
+    border-left: #000;
+}
+
+#btn6 {
+
+    border-right: #000;
+}
+
+#btn7 {
+    border-bottom: #000;
+    border-left: #000;
+}
+
+#btn8 {
+    border-bottom: #000;
+}
+
+#btn9 {
+    border-bottom: #000;
+    border-right: #000;
+}
+
+
+#whosTurn {
+    font-size: 1.5rem;
+    margin-bottom: 50px;
+}
+
+#valueCont {
+    font-size: 1.5rem;
+}
+
+#userCont {
+    font-size: 1.7rem;
+}
+
+#oppNameCont {
+    font-size: 1.7rem;
+}
